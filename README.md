@@ -1,14 +1,14 @@
 <p align="center">
-  <img src="public/logo-mark.png" alt="Asura Store" width="140">
+  <img src="public/logo-mark.png" alt="Toren Store" width="140">
 </p>
 
-# Asura Store
+# Toren Store
 
 [![CI](https://github.com/ASURA-OS/asura-store/actions/workflows/ci.yml/badge.svg)](https://github.com/ASURA-OS/asura-store/actions/workflows/ci.yml)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4ba3ce.svg)](CODE_OF_CONDUCT.md)
 
-The software store of the **[ASURA OS](https://github.com/mohitjoer/ASURA-OS)** desktop:
+The software store of the **[Toren Linux](https://github.com/mohitjoer/ASURA-OS)** desktop:
 a Quickshell showroom window and a small Go data plane that browse, search, install and
 remove software. [NOTICE.md](NOTICE.md) contains licensing and third-party notices.
 
@@ -55,8 +55,8 @@ asura-store search "video editor"              # xbps hits, JSON
 asura-store check                              # {"revision","updateAvailable","offline"}
 asura-store install apps vlc                   # {"stage","percent"} progress lines
 asura-store remove apps vlc
-asura-store open discover                      # the OS-session subcommands
-asura-store settings themes                    # (need the ASURA shell installed)
+asura-store open discover                      # the OS-session subcommands (or toren-store)
+asura-store settings themes                    # (need the Toren shell installed)
 ```
 
 Every reading command answers JSON and writes nothing else to stdout. Every failing
@@ -78,8 +78,8 @@ window-manager gate, and how to author catalogue entries — is
 ## Development
 
 Prerequisites: Go (at least the version `go.mod` names), Node.js 22+ for the window's
-JavaScript tests, `jq`, and an ASURA OS session to run the window in (note below).
-`qmllint` comes with Qt's declarative tools. On ASURA OS (or any Void Linux system),
+JavaScript tests, `jq`, and a Toren Linux session to run the window in (note below).
+`qmllint` comes with Qt's declarative tools. On Toren Linux (or any Void Linux system),
 all of it is one command:
 
 ```bash
@@ -89,7 +89,7 @@ sudo xbps-install -S go gcc make jq nodejs qt6-declarative-devel qt6-declarative
 Every day:
 
 ```bash
-make build                        # builds bin/asura-store
+make build                        # builds bin/asura-store (and toren-store alias)
 make test                         # go tests + the window's node --test suite
 cd cmd/asura-store && go vet ./... && go test -count=1 -race ./...
 /usr/lib/qt6/bin/qmllint ../../ui/*.qml    # errors fail; the Quickshell/qs.Ui warnings are expected

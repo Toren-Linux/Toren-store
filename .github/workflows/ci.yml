@@ -6,7 +6,7 @@
 # helpers, the QML the window is written in, and the catalogue JSON itself.
 # Everything is self-contained: the only checkout is this repository.
 #
-# Every job runs inside Void Linux (glibc), ASURA OS's base layer, with its
+# Every job runs inside Void Linux (glibc), Toren Linux's base layer, with its
 # tools from Void's repositories, so the checks run against the same Go,
 # Qt and Node.js the OS ships rather than a generic Ubuntu runner's.
 

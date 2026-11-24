@@ -1,4 +1,4 @@
-# Contributing to Asura Store
+# Contributing to Toren Store
 
 Thank you for pointing at the code. This repository is small on purpose — one
 Go data plane, one Quickshell window, a folder of catalogue JSON — so the
@@ -28,7 +28,7 @@ rules here are short, and most of them are what the CI gate
 - **`jq`** — most CI scripts answer through it.
 - **For `qmllint`** — Qt's declarative tools.
 
-  On ASURA OS (or any Void Linux system), everything above is one command:
+  On Toren Linux (or any Void Linux system), everything above is one command:
 
   ```bash
   sudo xbps-install -S go gcc make jq nodejs qt6-declarative-devel qt6-declarative-tools
