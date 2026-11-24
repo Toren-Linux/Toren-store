@@ -1,6 +1,6 @@
 # The store
 
-This repository is the standalone home of ASURA's software store: the Quickshell
+This repository is the standalone home of Toren Linux's software store: the Quickshell
 window (`ui/`), the `asura-store` command (`cmd/asura-store/`) and the local
 catalogue (`catalog/`). The pieces and the ledger live in [NOTICE](../NOTICE.md). In the distribution itself the trees are
 byte-identical mirrors of this one (`desktop/cmd/asura-store/`,
@@ -10,10 +10,10 @@ byte-identical mirrors of this one (`desktop/cmd/asura-store/`,
 |---|---|---|
 | `asura-store` | `cmd/asura-store` | The data plane: catalogue, search, check, install, remove, open, settings. |
 | The window | `ui/store.qml` and the components beside it (`ui/*.qml`, `ui/Singletons/`, `ui/lib/store.js`) | The store window; the logic sits beside its `node --test` suite. |
-| `catalog/` | `catalog/<kind>/*.json` | Local catalogue manifests, staged by `make install` to `/usr/share/asura/store/catalog/`. A checkout update changes the shelf without a rebuild. |
+| `catalog/` | `catalog/<kind>/*.json` | Local catalogue manifests, staged by `make install` to `/usr/share/asura/store/catalog/` (aliased to `/usr/share/toren/store/catalog/`). A checkout update changes the shelf without a rebuild. |
 
-On disk the installed layout is `/usr/bin/asura-store` plus
-`/usr/share/asura/store/{ui,catalog}`. The catalogue loader also accepts a
+On disk the installed layout is `/usr/bin/asura-store` (aliased as `/usr/bin/toren-store`) plus
+`/usr/share/asura/store/{ui,catalog}` (aliased as `/usr/share/toren/store`). The catalogue loader also accepts a
 checkout (it walks up from the working directory and the executable looking for
 `catalog/<kind>`), which is what makes `go test` work without an install.
 
@@ -33,7 +33,7 @@ asura-store check                                 JSON: {"revision","updateAvail
 asura-store install CATEGORY ID                   progress lines on stdout, an error on stderr
 asura-store remove CATEGORY ID
 asura-store open SECTION                          discover | library | a window section
-asura-store settings CATEGORY [ID]                opens Settings (asura-shell hub open) on its page
+asura-store settings CATEGORY [ID]                opens Settings (toren-shell / asura-shell hub open) on its page
 ```
 
 Every reading command answers JSON on stdout and nothing else. Every failing
@@ -69,7 +69,7 @@ the step has no number — and one sentence on stderr, which the window shows.
 
 1. `asura-store` runs `pkexec xbps-install -y vlc` (or `pkexec xbps-remove -y vlc`)
    directly; there is no helper in between. polkit asks the session's
-   authentication agent, which is `asura-shell`, for the password. Nothing in
+   authentication agent, which is `toren-shell` (or `asura-shell`), for the password. Nothing in
    the store runs `sudo`.
 2. The store brackets the transaction with `AUTHORIZING`, then `INSTALLING`
    (or `REMOVING`) at 100, since xbps cannot number one transaction.
@@ -152,7 +152,7 @@ a catalogue exists).
 
 `settings` maps a category to the Settings page that manages it (`themes` and
 `rices` to appearance, `plugins` and `bundles` to add-ons, `barstyles` to Bar
-Studio, `fastfetch` to fastfetch) and asks `asura-shell hub open` for that
+Studio, `fastfetch` to fastfetch) and asks `toren-shell hub open` (or `asura-shell hub open`) for that
 page; a category without one is an error.
 
 ## Authoring catalogue entries

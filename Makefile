@@ -8,6 +8,7 @@ all: build
 
 build:
 	cd cmd/asura-store && go build -o ../../bin/asura-store .
+	ln -sf asura-store bin/toren-store
 
 test:
 	cd cmd/asura-store && go test -v ./...
@@ -19,9 +20,12 @@ run-ui:
 install: build
 	install -d $(DESTDIR)$(BINDIR)
 	install -m 755 bin/asura-store $(DESTDIR)$(BINDIR)/asura-store
+	ln -sf asura-store $(DESTDIR)$(BINDIR)/toren-store
 	install -d $(DESTDIR)$(DATADIR)
 	cp -r ui $(DESTDIR)$(DATADIR)/
 	cp -r catalog $(DESTDIR)$(DATADIR)/
+	install -d $(DESTDIR)$(PREFIX)/share/toren
+	ln -sfn ../asura/store $(DESTDIR)$(PREFIX)/share/toren/store
 
 clean:
 	rm -rf bin/

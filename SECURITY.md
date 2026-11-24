@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository is the standalone Asura Store: the `asura-store` Go data plane
+This repository is the standalone Toren Store: the `asura-store` Go data plane
 (`cmd/asura-store/`), the Quickshell window (`ui/`), and the catalogue
 manifests (`catalog/`). Reports about the code in this tree belong here.
 
