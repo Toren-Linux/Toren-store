@@ -2,16 +2,16 @@
 
 PREFIX ?= /usr
 BINDIR ?= $(PREFIX)/bin
-DATADIR ?= $(PREFIX)/share/asura/store
+DATADIR ?= $(PREFIX)/share/toren/store
 
 all: build
 
 build:
-	cd cmd/asura-store && go build -o ../../bin/asura-store .
-	ln -sf asura-store bin/toren-store
+	cd cmd/toren-store && go build -o ../../bin/toren-store .
+	ln -sf toren-store bin/toren-store
 
 test:
-	cd cmd/asura-store && go test -v ./...
+	cd cmd/toren-store && go test -v ./...
 	cd ui/lib && node --test store.test.mjs
 
 run-ui:
@@ -19,13 +19,13 @@ run-ui:
 
 install: build
 	install -d $(DESTDIR)$(BINDIR)
-	install -m 755 bin/asura-store $(DESTDIR)$(BINDIR)/asura-store
-	ln -sf asura-store $(DESTDIR)$(BINDIR)/toren-store
+	install -m 755 bin/toren-store $(DESTDIR)$(BINDIR)/toren-store
+	ln -sf toren-store $(DESTDIR)$(BINDIR)/toren-store
 	install -d $(DESTDIR)$(DATADIR)
 	cp -r ui $(DESTDIR)$(DATADIR)/
 	cp -r catalog $(DESTDIR)$(DATADIR)/
 	install -d $(DESTDIR)$(PREFIX)/share/toren
-	ln -sfn ../asura/store $(DESTDIR)$(PREFIX)/share/toren/store
+	ln -sfn ../toren/store $(DESTDIR)$(PREFIX)/share/toren/store
 
 clean:
 	rm -rf bin/

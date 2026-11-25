@@ -14,9 +14,9 @@ name: ci
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -69,19 +69,19 @@ jobs:
         run: CGO_ENABLED=1 go test -count=1 -race -v ./...
 
       - name: build the CLI the way the release does
-        run: go build -trimpath -o /tmp/asura-store ./cmd/asura-store
+        run: go build -trimpath -o /tmp/toren-store ./cmd/toren-store
 
       - name: make install lands the binary, the window and the catalogue
         run: |
           make install DESTDIR=/tmp/stageroot
-          test -x /tmp/stageroot/usr/bin/asura-store
-          test -f /tmp/stageroot/usr/share/asura/store/ui/store.qml
-          test -d /tmp/stageroot/usr/share/asura/store/catalog/plugins
+          test -x /tmp/stageroot/usr/bin/toren-store
+          test -f /tmp/stageroot/usr/share/toren/store/ui/store.qml
+          test -d /tmp/stageroot/usr/share/toren/store/catalog/plugins
 
       - name: CLI smoke against the built binary
         run: |
           set -euo pipefail
-          BIN=/tmp/asura-store
+          BIN=/tmp/toren-store
 
           mkdir -p /tmp/bin
           cat << 'EOF' > /tmp/bin/xbps-query

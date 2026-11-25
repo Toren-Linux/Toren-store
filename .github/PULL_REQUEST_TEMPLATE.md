@@ -5,7 +5,7 @@ opening five other files.
 
 ## Type of change
 
-- [ ] Backend data plane (`cmd/asura-store/`)
+- [ ] Backend data plane (`cmd/toren-store/`)
 - [ ] Window (`ui/`)
 - [ ] Catalogue (`catalog/`)
 - [ ] Build, CI or tests
@@ -29,7 +29,7 @@ Fixes #
 For anything that is not documentation:
 
 - [ ] `gofmt -l cmd/` is clean
-- [ ] `go vet ./...` and `go test -count=1 -race ./...` (in `cmd/asura-store/`) pass
+- [ ] `go vet ./...` and `go test -count=1 -race ./...` (in `cmd/toren-store/`) pass
 - [ ] `node --test ui/lib/store.test.mjs` passes
 - [ ] `qmllint` is clean — errors fail; the Quickshell/qs.Ui warnings are expected
 - [ ] stdout still belongs to the JSON contract; errors are one sentence on stderr
@@ -44,8 +44,8 @@ For catalogue entries:
 
 ## Mirror duty
 
-`desktop/cmd/asura-store/`, `shell/store.qml` + `shell/store/` and
-`desktop/catalog/` in [`mohitjoer/ASURA-OS`](https://github.com/mohitjoer/ASURA-OS)
+`desktop/cmd/toren-store/`, `shell/store.qml` + `shell/store/` and
+`desktop/catalog/` in [`mohitjoer/TOREN-OS`](https://github.com/mohitjoer/TOREN-OS)
 are kept byte-identical with this repository (standalone `NOTICE.md`,
 workflows, docs and the `ui/store.qml` entry point are excluded). If this PR
 changes any of those trees, the mirror commit lands with it or directly after

@@ -1,19 +1,19 @@
 # The store
 
 This repository is the standalone home of Toren Linux's software store: the Quickshell
-window (`ui/`), the `asura-store` command (`cmd/asura-store/`) and the local
+window (`ui/`), the `toren-store` command (`cmd/toren-store/`) and the local
 catalogue (`catalog/`). The pieces and the ledger live in [NOTICE](../NOTICE.md). In the distribution itself the trees are
-byte-identical mirrors of this one (`desktop/cmd/asura-store/`,
+byte-identical mirrors of this one (`desktop/cmd/toren-store/`,
 `shell/store.qml` + `shell/store/`, `desktop/catalog/`); this copy is canonical.
 
-| Piece | Where | What it does |
-|---|---|---|
-| `asura-store` | `cmd/asura-store` | The data plane: catalogue, search, check, install, remove, open, settings. |
-| The window | `ui/store.qml` and the components beside it (`ui/*.qml`, `ui/Singletons/`, `ui/lib/store.js`) | The store window; the logic sits beside its `node --test` suite. |
-| `catalog/` | `catalog/<kind>/*.json` | Local catalogue manifests, staged by `make install` to `/usr/share/asura/store/catalog/` (aliased to `/usr/share/toren/store/catalog/`). A checkout update changes the shelf without a rebuild. |
+| Piece         | Where                                                                                         | What it does                                                                                                                                                                                    |
+| ------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `toren-store` | `cmd/toren-store`                                                                             | The data plane: catalogue, search, check, install, remove, open, settings.                                                                                                                      |
+| The window    | `ui/store.qml` and the components beside it (`ui/*.qml`, `ui/Singletons/`, `ui/lib/store.js`) | The store window; the logic sits beside its `node --test` suite.                                                                                                                                |
+| `catalog/`    | `catalog/<kind>/*.json`                                                                       | Local catalogue manifests, staged by `make install` to `/usr/share/toren/store/catalog/` (aliased to `/usr/share/toren/store/catalog/`). A checkout update changes the shelf without a rebuild. |
 
-On disk the installed layout is `/usr/bin/asura-store` (aliased as `/usr/bin/toren-store`) plus
-`/usr/share/asura/store/{ui,catalog}` (aliased as `/usr/share/toren/store`). The catalogue loader also accepts a
+On disk the installed layout is `/usr/bin/toren-store` (aliased as `/usr/bin/toren-store`) plus
+`/usr/share/toren/store/{ui,catalog}` (aliased as `/usr/share/toren/store`). The catalogue loader also accepts a
 checkout (it walks up from the working directory and the executable looking for
 `catalog/<kind>`), which is what makes `go test` work without an install.
 
@@ -21,25 +21,25 @@ The window's entry file is byte-identical with the distribution's
 `shell/store.qml`: it is written to sit at a quickshell root, beside the
 shell's `store/` directory and its `qs.Ui` kit. In this repository it is
 source — mirrored into the distribution — and the runnable arrangement lives
-there; `asura-store open discover` starts the window through the OS session
+there; `toren-store open discover` starts the window through the OS session
 wrapper.
 
 ## The commands
 
 ```text
-asura-store catalog [--refresh] [--category ID]   JSON: categories and items
-asura-store search QUERY                          JSON: {"items": [...]} from the archive
-asura-store check                                 JSON: {"revision","updateAvailable","offline"}
-asura-store install CATEGORY ID                   progress lines on stdout, an error on stderr
-asura-store remove CATEGORY ID
-asura-store open SECTION                          discover | library | a window section
-asura-store settings CATEGORY [ID]                opens Settings (toren-shell / asura-shell hub open) on its page
+toren-store catalog [--refresh] [--category ID]   JSON: categories and items
+toren-store search QUERY                          JSON: {"items": [...]} from the archive
+toren-store check                                 JSON: {"revision","updateAvailable","offline"}
+toren-store install CATEGORY ID                   progress lines on stdout, an error on stderr
+toren-store remove CATEGORY ID
+toren-store open SECTION                          discover | library | a window section
+toren-store settings CATEGORY [ID]                opens Settings (toren-shell / toren-shell hub open) on its page
 ```
 
 Every reading command answers JSON on stdout and nothing else. Every failing
 invocation answers one sentence on stderr and exits 1; `main` prefixes it with
-`asura-store: ` for a terminal, the window prints the sentence as it comes.
-The [JSON contract](../cmd/asura-store/model.go) is the source of truth for
+`toren-store: ` for a terminal, the window prints the sentence as it comes.
+The [JSON contract](../cmd/toren-store/model.go) is the source of truth for
 field names — `Catalog`, `Category`, `Item` — and the window reads them
 unchanged, every page in the same shape.
 
@@ -49,7 +49,7 @@ and the installed read from `xbps-query -l`. `barstyles`
 lists the shell's two built-in bar styles — `top` and `side` — and
 the one `shell.json` selects. `plugins`
 reads the local catalogue under `catalog/plugins/`: each entry carries an
-`upstream` repo, and installed means a folder in `~/.local/share/asura/plugins`.
+`upstream` repo, and installed means a folder in `~/.local/share/toren/plugins`.
 `themes` merges the built-ins with the `catalog/themes/` entries and any theme
 directory on disk, and marks active the one the current-theme file names.
 Any other category is an error — `rices`, `lockscreens`, `bundles` and the rest
@@ -61,15 +61,15 @@ category-scoped query never acknowledges — it is a read, not a viewing.
 
 ## How an install happens
 
-The window runs `asura-store install CATEGORY ID`. The store prints one
+The window runs `toren-store install CATEGORY ID`. The store prints one
 `{"stage","percent"}` JSON line per step on stdout — a negative percent means
 the step has no number — and one sentence on stderr, which the window shows.
 
 `apps` is native packages from Void Linux's repositories:
 
-1. `asura-store` runs `pkexec xbps-install -y vlc` (or `pkexec xbps-remove -y vlc`)
+1. `toren-store` runs `pkexec xbps-install -y vlc` (or `pkexec xbps-remove -y vlc`)
    directly; there is no helper in between. polkit asks the session's
-   authentication agent, which is `toren-shell` (or `asura-shell`), for the password. Nothing in
+   authentication agent, which is `toren-shell` (or `toren-shell`), for the password. Nothing in
    the store runs `sudo`.
 2. The store brackets the transaction with `AUTHORIZING`, then `INSTALLING`
    (or `REMOVING`) at 100, since xbps cannot number one transaction.
@@ -79,18 +79,18 @@ the step has no number — and one sentence on stderr, which the window shows.
 
 The window cancels with SIGTERM or SIGINT. Once `pkexec` has started xbps as
 root, the store cannot signal it, so a transaction that has started runs to its
-end rather than leave a half-configured system. `asura-store` also ignores
+end rather than leave a half-configured system. `toren-store` also ignores
 `SIGPIPE` and `SIGHUP`, so closing the window never kills a transaction partway.
 
 `plugins` installs nothing itself. The catalogue entry names the upstream repo,
-and the store runs `asura plugin install <upstream> --yes` (remove runs
-`asura plugin remove <id>`), exactly what the Add-ons page uses. Without that
+and the store runs `toren plugin install <upstream> --yes` (remove runs
+`toren plugin remove <id>`), exactly what the Add-ons page uses. Without that
 link there is no payload — an empty folder is not a plugin — so the store
 refuses, and its error names the command that would work.
 
 `themes` is applied, not downloaded. Installing a theme writes its name into
-`~/.config/asura/current/theme.name` (`XDG_CONFIG_HOME` honoured; the older
-bare `~/.config/asura/theme.name` is still read), which the shell's theme
+`~/.config/toren/current/theme.name` (`XDG_CONFIG_HOME` honoured; the older
+bare `~/.config/toren/theme.name` is still read), which the shell's theme
 engine picks up live. Only a theme whose files are on disk can be activated —
 a catalogue-only entry stays listed as available. A removal refuses the
 active theme, then deletes the theme's directories.
@@ -105,7 +105,7 @@ identity of its items — category, id, version, manifest digest, the declared
 window manager, a digest of declared package managers, the paused state and the
 declared upstream links — everything an upstream change can alter, and nothing
 volatile (local install state, timestamps). Viewing the catalogue acknowledges
-the revision by writing it to `~/.cache/asura-store/seen-revision`
+the revision by writing it to `~/.cache/toren-store/seen-revision`
 (`XDG_CACHE_HOME` honoured), and only when it shows items — an empty first
 view, which is an offline machine, never becomes the seen baseline.
 
@@ -124,7 +124,7 @@ its `offline`, `cachedAt` and `error` — while the others still render.
 
 A catalogue item may name the window manager it was authored against
 (`requiredWindowManager`). The store
-asks the running provider once per launch — `asura wm status`, whose
+asks the running provider once per launch — `toren wm status`, whose
 `Provider:` line is the answer — and compares names; a third provider needs no
 change in the store. An item named for another manager stays listed and keeps
 any installed copy removable, but install and update are refused, so a control
@@ -142,7 +142,7 @@ answers `{"items": []}`, not an error.
 
 ## Open and settings
 
-`open` starts the store window under its lock (`/usr/share/asura/session/asura-store`,
+`open` starts the store window under its lock (`/usr/share/toren/session/toren-store`,
 the session wrapper the OS ships) and calls `nav open` on it through quickshell
 ipc, retrying for 3 s while the window settles; a second instance exits at the
 lock, so the call simply reaches the first. It accepts `discover`, `library`
@@ -152,7 +152,7 @@ a catalogue exists).
 
 `settings` maps a category to the Settings page that manages it (`themes` and
 `rices` to appearance, `plugins` and `bundles` to add-ons, `barstyles` to Bar
-Studio, `fastfetch` to fastfetch) and asks `toren-shell hub open` (or `asura-shell hub open`) for that
+Studio, `fastfetch` to fastfetch) and asks `toren-shell hub open` (or `toren-shell hub open`) for that
 page; a category without one is an error.
 
 ## Authoring catalogue entries
@@ -171,7 +171,7 @@ grammar vanishes from its shelf — which is why CI validates the data loudly
   "description": "...",
   "author": "...",
   "version": "0.1.0",
-  "upstream": "https://github.com/USER/asura-plugin-weather"
+  "upstream": "https://github.com/USER/toren-plugin-weather"
 }
 ```
 
@@ -179,10 +179,10 @@ For a plugin the `upstream` line is load-bearing: without it the entry has no
 payload and install refuses, naming the command that would work. Grammars,
 enforced at load:
 
-| Kind | id grammar |
-|---|---|
-| `plugins` | `^[a-z0-9][a-z0-9-]*$` — what `asura plugin` enforces, so an id can never escape its directory or read as an option |
-| `themes`, `barstyles` | `^[a-z0-9][a-z0-9._-]*$` |
+| Kind                  | id grammar                                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `plugins`             | `^[a-z0-9][a-z0-9-]*$` — what `toren plugin` enforces, so an id can never escape its directory or read as an option |
+| `themes`, `barstyles` | `^[a-z0-9][a-z0-9._-]*$`                                                                                            |
 
 Optional gates on any entry: `requiredWindowManager` (the gate above),
 `requiredPackageManagers` (e.g. `["xbps"]`), `downloadPaused` with
@@ -214,7 +214,7 @@ them up on the next build.
 ## Checks
 
 ```sh
-cd cmd/asura-store && gofmt -l . && go vet ./... && go test -count=1 -race ./...
+cd cmd/toren-store && gofmt -l . && go vet ./... && go test -count=1 -race ./...
 node --test ui/lib/store.test.mjs
 /usr/lib/qt6/bin/qmllint ../../ui/*.qml     # errors fail; the Quickshell/qs.Ui warnings are expected
 ```

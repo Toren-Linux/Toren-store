@@ -2,13 +2,13 @@
 
 ## Scope
 
-This repository is the standalone Toren Store: the `asura-store` Go data plane
-(`cmd/asura-store/`), the Quickshell window (`ui/`), and the catalogue
+This repository is the standalone Toren Store: the `toren-store` Go data plane
+(`cmd/toren-store/`), the Quickshell window (`ui/`), and the catalogue
 manifests (`catalog/`). Reports about the code in this tree belong here.
 
 Out of scope: the distribution itself
-([`mohitjoer/ASURA-OS`](https://github.com/mohitjoer/ASURA-OS)), XBPS and polkit,
-Quickshell, and the plugin kit (`asura plugin`). Anything at
+([`mohitjoer/TOREN-OS`](https://github.com/mohitjoer/TOREN-OS)), XBPS and polkit,
+Quickshell, and the plugin kit (`toren plugin`). Anything at
 those seams is still welcome if the store's side caused or exposed it.
 
 ## The honest threat model
@@ -20,7 +20,7 @@ What an attacker could do through or around this process:
   through `pkexec xbps-install` / `pkexec xbps-remove`. Declined prompts
   surface as sentences, never silent failures.
 - **A plugin install executes third-party upstream code.** `install plugins <id>`
-  hands the entry's `upstream` repo to `asura plugin install`, which clones and
+  hands the entry's `upstream` repo to `toren plugin install`, which clones and
   installs it. The catalogue in this repository curates those links; treat an
   unexpected `upstream` in any catalogue file — in a PR, in a mirror, or on
   disk — as a supply-chain issue of the highest severity.
@@ -36,7 +36,7 @@ What an attacker could do through or around this process:
 ## Reporting
 
 **Do not open a public issue for a security problem.** Open the repository's
-*Report a vulnerability* form on GitHub (Security → Reports) and describe the
+_Report a vulnerability_ form on GitHub (Security → Reports) and describe the
 outcome, the exact command sequence against it, and versions in play. Private
 reports stay private while they are being fixed.
 

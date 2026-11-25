@@ -1,5 +1,5 @@
 name: Bug report
-description: Something in the store window or the asura-store command misbehaves
+description: Something in the store window or the toren-store command misbehaves
 labels: [bug]
 body:
   - type: markdown
@@ -57,7 +57,7 @@ body:
     id: catalogue
     attributes:
       label: The catalogue answer, if useful
-      description: "`asura-store catalog --refresh 2>err.txt | head -100` — trim anything you consider private."
+      description: "`toren-store catalog --refresh 2>err.txt | head -100` — trim anything you consider private."
       render: text
   - type: textarea
     id: environment

@@ -39,8 +39,8 @@ rules here are short, and most of them are what the CI gate
 The same set CI runs, in commands a human can type:
 
 ```bash
-make build                                        # bin/asura-store
-cd cmd/asura-store
+make build                                        # bin/toren-store
+cd cmd/toren-store
 gofmt -l .                                        # must print nothing
 go vet ./...
 go test -count=1 -race ./...
@@ -50,7 +50,7 @@ node --test ui/lib/store.test.mjs                 # from the repo root
 
 A change the CLI smoke would exercise (the refresh-dot contract, the catalogue
 shape, an error path) is best proven with the smoke set in the workflow's
-`backend` job, or by hand: `asura-store check`, `catalog`, `search`, and the
+`backend` job, or by hand: `toren-store check`, `catalog`, `search`, and the
 refusals, which must each be one sentence on stderr and exit 1.
 
 ## The rules that make review quick
@@ -61,7 +61,7 @@ refusals, which must each be one sentence on stderr and exit 1.
   window could show a person.
 - **The `Item` contract is shared with the window pages.** Field names and
   JSON tags are the compatibility surface — add fields if you must, never
-  rename or repurpose one. `cmd/asura-store/model.go` is the source of truth;
+  rename or repurpose one. `cmd/toren-store/model.go` is the source of truth;
   keep its comments honest.
 - **Paths honour the environment** — `XDG_CONFIG_HOME`, `XDG_DATA_HOME`,
   `XDG_CACHE_HOME` — and nothing user-facing lives outside them.
@@ -90,8 +90,8 @@ drift is caught before vet, so keep the tree formatted and the diffs honest.
 ## The mirrors
 
 The distribution keeps byte-identical copies of this repository:
-`desktop/cmd/asura-store/`, `shell/store.qml` + `shell/store/` and
-`desktop/catalog/` in [`mohitjoer/ASURA-OS`](https://github.com/mohitjoer/ASURA-OS),
+`desktop/cmd/toren-store/`, `shell/store.qml` + `shell/store/` and
+`desktop/catalog/` in [`mohitjoer/TOREN-OS`](https://github.com/mohitjoer/TOREN-OS),
 where a `store-sync` workflow diffs them against this repo's `HEAD` and fails
 on any drift (plus a daily catch-up, so a forgotten mirror turns red within a
 day). This repository is the canonical copy: land your change here first, then
