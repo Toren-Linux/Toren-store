@@ -8,7 +8,6 @@ all: build
 
 build:
 	cd cmd/toren-store && go build -o ../../bin/toren-store .
-	ln -sf toren-store bin/toren-store
 
 test:
 	cd cmd/toren-store && go test -v ./...
@@ -20,12 +19,9 @@ run-ui:
 install: build
 	install -d $(DESTDIR)$(BINDIR)
 	install -m 755 bin/toren-store $(DESTDIR)$(BINDIR)/toren-store
-	ln -sf toren-store $(DESTDIR)$(BINDIR)/toren-store
 	install -d $(DESTDIR)$(DATADIR)
 	cp -r ui $(DESTDIR)$(DATADIR)/
 	cp -r catalog $(DESTDIR)$(DATADIR)/
-	install -d $(DESTDIR)$(PREFIX)/share/toren
-	ln -sfn ../toren/store $(DESTDIR)$(PREFIX)/share/toren/store
 
 clean:
 	rm -rf bin/
